@@ -1,0 +1,70 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    // Flutter Gradle Plugin harus diaktifkan setelah plugin Android dan Kotlin
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+android {
+    namespace = "com.example.myapp"  // Namespace harus ditentukan
+    compileSdkVersion 34
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_19
+        targetCompatibility JavaVersion.VERSION_19
+    }
+
+    kotlinOptions {
+        jvmTarget = "19"
+    }
+
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(19))
+        }
+    }
+
+    signingConfigs {
+        release {
+            // Tentukan path ke keystore di bawah ini
+            storeFile file("D:/ITS/1.KULIAH/SEMESTER 5/TEKBER/Flutter/myapp/key.jks")
+            storePassword "123456"
+            keyAlias "keyAlias"
+            keyPassword "123456"
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            // Aktifkan code shrinking jika Anda ingin menghapus resource tidak terpakai
+            minifyEnabled true 
+            shrinkResources true
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+        debug {
+            // Nonaktifkan shrinking dan penghapusan resources untuk build debug
+            minifyEnabled false
+            shrinkResources false
+        }
+    }
+
+    defaultConfig {
+        applicationId "com.example.myapp"
+        minSdkVersion 21  // Gantilah ini sesuai dengan versi minimal yang Anda inginkan
+        targetSdkVersion 34
+        versionCode 1
+        versionName "1.0"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+flutter {
+    source = "../.."  // Lokasi source Flutter
+}
